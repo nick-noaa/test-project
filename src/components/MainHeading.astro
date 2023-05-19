@@ -1,0 +1,112 @@
+---
+// Component Imports
+import Link from './Link.astro';
+
+import Search from './Search.astro';
+
+const currentPath = Astro.url.pathname;
+
+// Props
+const { heading, subHeading } = Astro.props;
+
+let className;
+
+currentPath !== '/' ? (className = 'heading') : (className = 'search');
+---
+
+<div class={className}>
+  {
+    currentPath !== '/' ? (
+      <>
+        <h1>{heading}</h1>
+        <p>{subHeading}</p>
+      </>
+    ) : (
+      <Search />
+    )
+  }
+
+  <div class="gap">
+    <Link text="Home Page" href="/" style="primary" type="button" />
+    <Link text="Cards" href="/about" style="secondary" type="button" />
+    <Link text="Products" href="/products" style="light" type="button" />
+    <Link
+      text="Tabs"
+      href="/products/world-magnetic-model"
+      style="accent"
+      type="button"
+    />
+    <Link text="Alerts" href="/news" style="error" type="button" />
+    <Link
+      text="Git"
+      href="https://github.com/nick-noaa/ncei-astro"
+      style="white"
+      type="button"
+      icon={{
+        name: 'mdi:open-in-new',
+        side: 'right',
+      }}
+      newTab
+    />
+  </div>
+</div>
+
+<style>
+  .heading {
+    color: var(--clr-white);
+    gap: 1em;
+    align-self: end;
+
+    max-width: 100rem;
+
+    @media (--tablet) {
+      & h1 {
+        text-align: center;
+      }
+
+      & p {
+        text-align: left;
+      }
+    }
+    @media (--phone) {
+      & p {
+        text-align: center;
+      }
+    }
+  }
+
+  .search {
+    --color-hs: var(--clr-bw-hs);
+    --color-l: var(--clr-white-l);
+    --color: hsl(var(--color-hs) var(--color-l));
+    --border-size: 2px;
+    --font-size: var(--fs-4);
+    --size: 5rem;
+    --width: 60rem;
+    --display: block;
+    --left: 40%;
+    --top: -5rem;
+    --padding: 0 0.5em 0 40%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    padding-top: 1em;
+
+    @media (--tablet) {
+      justify-content: space-evenly;
+    }
+
+    @media (--phone) {
+      align-content: center;
+      flex-direction: column;
+    }
+  }
+</style>

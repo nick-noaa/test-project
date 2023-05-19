@@ -1,0 +1,342 @@
+---
+// Library Imports
+import { Icon } from 'astro-icon';
+
+// Component Imports
+import GlowEffect from './GlowEffect.astro';
+import MegaMenu from './MegaMenu.astro';
+
+// React Imports
+import { DropdownButton } from './dropdown/DropdownMenu';
+
+// Props
+export interface Props {
+  text: string;
+  href?: string;
+  label?: string;
+  toolTip?: boolean;
+  shortText?: boolean;
+  style: 'primary' | 'secondary' | 'error' | 'accent' | 'light' | 'white';
+  icon?: {
+    name: string;
+    side: 'left' | 'right';
+  };
+  isFilled?: boolean;
+  type?: 'button' | 'link' | 'nav' | 'tabs';
+  classes?: string;
+  newTab?: boolean;
+  dropDown?: boolean;
+}
+let {
+  text,
+  href,
+  label = text,
+  toolTip = false,
+  shortText,
+  style = 'primary',
+  icon,
+  isFilled = true,
+  type = 'button',
+  classes,
+  newTab = false,
+  dropDown = false,
+  ...rest
+} = Astro.props as Props;
+---
+
+{
+  dropDown ? (
+    <>
+      <DropdownButton
+        href={href}
+        label={label}
+        style={style}
+        classes={classes}
+        client:media="(min-width: 48.75em)"
+      >
+        {classes == 'glow' ? <GlowEffect /> : ''}
+        <span>{text}</span>
+        <Icon name="mdi:arrow-down-drop" />
+      </DropdownButton>
+      <MegaMenu />
+    </>
+  ) : (
+    <a
+      href={href}
+      aria-label={label}
+      {...(newTab && { target: '_blank' })}
+      class:list={[
+        classes,
+        style,
+        type,
+        { filled: isFilled },
+        { tip: toolTip },
+      ]}
+      {...rest}
+    >
+      {classes == 'glow' ? <GlowEffect /> : ''}
+
+      {icon && icon.side === 'left' && <Icon name={icon.name} />}
+
+      {shortText ? (
+        <div class="short-text">
+          <span class="head">{text}</span>
+          <span class="body">{label}</span>
+        </div>
+      ) : (
+        <span>{text}</span>
+      )}
+      {icon && icon.side === 'right' && <Icon name={icon.name} />}
+    </a>
+  )
+}
+
+<style is:global>
+  .link {
+    color: var(--clr-base);
+    padding: 1em;
+    outline: none;
+    @media (--desktop) {
+      padding: 0.8em;
+    }
+    position: relative;
+    z-index: 1;
+    &:is(:hover, :focus) {
+      color: var(--clr-white);
+      transition: color 25ms ease-in;
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--clr-primary);
+      z-index: -1;
+      border-radius: 8px;
+      transform: scaleX(0);
+      transition: transform 20ms ease-in;
+    }
+    &:is(:hover, :focus)::after {
+      transform: scaleX(1);
+      animation: scale-up-center 100ms cubic-bezier(0.39, 0.575, 0.565, 1) both;
+    }
+
+    [astro-icon] {
+      color: inherit;
+      width: var(--fs-1);
+    }
+  }
+</style>
+
+<style>
+  .button {
+    display: inline-block;
+    background-color: hsl(var(--bg-hs) var(--bg-l));
+
+    border-radius: var(--br);
+    color: var(--font-clr);
+    font-weight: var(--fw-6);
+    padding: 0.5em 1em;
+    box-shadow: 0.3px 0.3px 1.5px -40px rgba(0, 0, 0, 0.02),
+      1.1px 1.1px 4.9px -40px rgba(0, 0, 0, 0.03),
+      5px 5px 22px -40px rgba(0, 0, 0, 0.05);
+    max-width: 20rem;
+    text-align: center;
+
+    &:is(:hover, :focus) {
+      box-shadow: 0px 0px 28px hsl(var(--bg-hs) calc(var(--bg-l) - 30%));
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) + 10%));
+    }
+
+    &:is(:active) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) - 10%));
+    }
+
+    &:is(:current) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) + 20%));
+    }
+
+    &:is(:disabled) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) - 10%));
+    }
+
+    &.primary {
+      --bg-hs: var(--clr-primary-hs);
+      --bg-l: var(--clr-primary-l);
+      --br: 3rem;
+      --font-clr: var(--clr-white);
+    }
+
+    &.secondary {
+      --bg-hs: var(--clr-secondary-hs);
+      --bg-l: var(--clr-secondary-l);
+      --br: 3rem;
+      --font-clr: var(--clr-base);
+    }
+    &.accent {
+      --bg-hs: var(--clr-accent-hs);
+      --bg-l: var(--clr-accent-l);
+      --br: 3rem;
+      --font-clr: var(--clr-white);
+    }
+    &.error {
+      --bg-hs: var(--clr-error-hs);
+      --bg-l: var(--clr-error-l);
+      --br: 3rem;
+      --font-clr: var(--clr-base);
+    }
+
+    &.light {
+      --bg-hs: var(--clr-light-hs);
+      --bg-l: calc(var(--clr-light-l) - 4%);
+      --br: 3rem;
+      --font-clr: var(--clr-base);
+    }
+
+    &.white {
+      --bg-hs: var(--clr-bw-hs);
+      --bg-l: calc(var(--clr-white-l) - 4%);
+      --br: 1rem;
+      --font-clr: var(--clr-base);
+      width: 25rem;
+    }
+
+    [astro-icon] {
+      color: inherit;
+      width: var(--fs-1);
+    }
+  }
+
+  .tabs {
+    display: inline-block;
+    background-color: hsl(var(--bg-hs) var(--bg-l));
+
+    border-radius: var(--br);
+    color: var(--font-clr);
+    font-weight: var(--fw-6);
+    padding: 0.5em 1em;
+    box-shadow: 0.3px 0.3px 1.5px -40px rgba(0, 0, 0, 0.02),
+      1.1px 1.1px 4.9px -40px rgba(0, 0, 0, 0.03),
+      5px 5px 22px -40px rgba(0, 0, 0, 0.05);
+    max-width: 20rem;
+    text-align: center;
+
+    &:is(:hover, :focus) {
+      box-shadow: 0px 0px 28px hsl(var(--bg-hs) calc(var(--bg-l) - 30%));
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) + 10%));
+    }
+
+    &:is(:active) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) - 10%));
+    }
+
+    &:is(:current) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) + 20%));
+    }
+
+    &:is(:disabled) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) - 10%));
+    }
+
+    &.primary {
+      --bg-hs: var(--clr-primary-hs);
+      --bg-l: var(--clr-primary-l);
+      --br: 3rem;
+      --font-clr: var(--clr-white);
+    }
+
+    &.secondary {
+      --bg-hs: var(--clr-secondary-hs);
+      --bg-l: var(--clr-secondary-l);
+      --br: 3rem;
+      --font-clr: var(--clr-base);
+    }
+    &.accent {
+      --bg-hs: var(--clr-accent-hs);
+      --bg-l: var(--clr-accent-l);
+      --br: 3rem;
+      --font-clr: var(--clr-white);
+    }
+    &.error {
+      --bg-hs: var(--clr-error-hs);
+      --bg-l: var(--clr-error-l);
+      --br: 3rem;
+      --font-clr: var(--clr-base);
+    }
+
+    &.light {
+      --bg-hs: var(--clr-light-hs);
+      --bg-l: calc(var(--clr-light-l) - 4%);
+      --br: 3rem;
+      --font-clr: var(--clr-base);
+    }
+
+    &.white {
+      --bg-hs: var(--clr-bw-hs);
+      --bg-l: calc(var(--clr-white-l) - 4%);
+      --br: 1rem;
+      --font-clr: var(--clr-base);
+      width: 25rem;
+    }
+
+    [astro-icon] {
+      color: inherit;
+      width: var(--fs-1);
+    }
+  }
+
+  .tip[aria-label] {
+    --background: var(--clr-primary);
+    --color: var(--clr-white);
+    --left: 50%;
+    position: relative;
+
+    &:hover {
+      &::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: var(--left);
+        transform: translateX(-50%);
+        border: 10px solid transparent;
+        border-top-color: var(--background);
+      }
+      &::after {
+        content: attr(aria-label);
+        position: absolute;
+        top: -3em;
+        left: var(--left);
+        transform: translateX(-50%);
+        background-color: var(--background);
+        color: var(--color);
+        padding: 0.5em;
+        border-radius: 0.5em;
+        white-space: nowrap;
+        font-size: var(--fs-1);
+      }
+    }
+  }
+
+  .short-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    & .head {
+      font-size: var(--fs-3);
+    }
+
+    & .body {
+      font-size: var(--fs-1);
+      font-style: italic;
+    }
+  }
+</style>

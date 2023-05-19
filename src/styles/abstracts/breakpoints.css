@@ -1,0 +1,15 @@
+/* custom-media-queries */
+@custom-media --very-tiny (max-width: 17.5em);
+@custom-media --tiny (max-width: 27.19em);
+@custom-media --phone (max-width: 31.25em);
+@custom-media --phone-lg (max-width: 38.25em);
+@custom-media --tablet (max-width: 48.75em);
+@custom-media --tablet-lg (max-width: 56.25em);
+@custom-media --desktop (max-width: 68.75em);
+@custom-media --desktop-lg (max-width: 75em);
+@custom-media --bigScreen (max-width: 80em);
+
+/* custom-motion-queries */
+@custom-media --motion (prefers-reduced-motion: no-preference);
+@custom-media --motion-reduce (prefers-reduced-motion: reduce);
+@custom-media --dark-mode (prefers-color-scheme: dark);

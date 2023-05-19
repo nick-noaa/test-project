@@ -1,0 +1,49 @@
+---
+// Utility functions
+// import { filteredByParentId } from '../js/utils';
+
+// Component Imports
+import Link from './Link.astro';
+
+// Data Imports
+import navData from '../data/navData.json';
+
+// React Import
+import { DropdownMenu } from './dropdown/DropdownMenu';
+---
+
+<DropdownMenu client:idle>
+  {
+    navData?.map(item =>
+      //TESTING
+      item.parent ===
+        'menu_link_content:bf4c8e9f-12e7-4147-a9e1-707a8732961d' ||
+      item.parent ===
+        'menu_link_content:272ae768-5401-49f1-83e4-a4ed15fc0cac' ||
+      item.parent ===
+        'menu_link_content:e034d3f3-2a7e-44b5-8770-0d10e2c17b3f' ? (
+        <li>
+          <Link
+            text={item.text}
+            href={item.href}
+            classes="glow"
+            style="primary"
+            type="link"
+            data-navLink
+          />
+        </li>
+      ) : (
+        ''
+      )
+    )
+  }
+</DropdownMenu>
+
+<style>
+  li {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+</style>

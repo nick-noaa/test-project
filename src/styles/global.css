@@ -1,0 +1,227 @@
+/* CSS RESET */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  /* TESTING */
+  /* color-scheme: light, dark; */
+  box-sizing: border-box;
+  font-size: 62.5%; /* 10px / 16px = 62.5% -> 1rem = 10px */
+  @media (--motion) {
+    scroll-behavior: smooth;
+  }
+}
+
+img,
+svg,
+video {
+  /* TESTING */
+  /* max-width: 100%; */
+  /* display: block; */
+}
+
+/* Typography */
+body {
+  color: var(--clr-base);
+  font-family: var(--ff-body);
+  font-size: var(--fs-3);
+  font-weight: var(--fw-5);
+  line-height: 1.6;
+}
+
+/* Headings */
+@custom-selector :--heading h1, h2, h3, h4, h5, h6;
+
+:--heading {
+  font-family: var(--ff-display);
+  font-weight: var(--fw-5);
+  line-height: 1.3;
+}
+
+h1 {
+  font-size: var(--fs-6);
+  font-weight: var(--fw-6);
+
+  @media (--phone) {
+    text-align: center;
+  }
+}
+
+h2 {
+  font-size: var(--fs-5);
+  /* TESTING */
+  color: var(--clr-accent);
+}
+
+h3,
+h4 {
+  font-size: var(--fs-4);
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Utils */
+.container {
+  margin: 2em;
+
+  @media (--tablet) {
+    margin: 1em;
+  }
+
+  @media (--phone) {
+    margin: 1em;
+  }
+
+  & h2 {
+    padding-bottom: 1em;
+    text-align: center;
+  }
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3em;
+
+  @media (--tablet) {
+    gap: 1.4em;
+  }
+
+  @media (--phone) {
+    gap: 1em;
+  }
+}
+
+.sr-only {
+  display: none;
+}
+
+/* Keyframes */
+@keyframes glow-visibility {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.htmlEl {
+  & div,
+  & span,
+  & h1,
+  & h2,
+  & h3,
+  & h4,
+  & h5,
+  & h6,
+  & p,
+  & blockquote,
+  & pre,
+  & a,
+  & em,
+  & img,
+  & small,
+  & strong,
+  & sub,
+  & sup,
+  & ol,
+  & ul,
+  & li,
+  & table,
+  & caption,
+  & tbody,
+  & tfoot,
+  & thead,
+  & tr,
+  & th,
+  & td,
+  & form,
+  & label,
+  & legend,
+  & input,
+  & select,
+  & textarea {
+    /* BUG inherit breaks */
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+  }
+}
+
+/* TESTING  Playing with styles for Tables */
+table,
+.htmlEl table {
+  --border: solid 1px hsl(var(--clr-gray-hs) calc(var(--clr-gray-l) + 35%));
+  width: 100%;
+  table-layout: fixed;
+  margin-block: 2em;
+  border-inline: var(--border);
+  border-spacing: 0;
+  & thead {
+    & tr {
+      & td,
+      & th {
+        text-align: center;
+        font-weight: var(--fw-6);
+        color: var(--clr-white);
+        text-transform: uppercase;
+        background-color: var(--clr-secondary);
+      }
+    }
+  }
+
+  & tbody {
+    & tr {
+      & td {
+        padding: 1em;
+        font-size: var(--fs-1);
+        border-bottom: var(--border);
+      }
+    }
+  }
+
+  & tr:nth-child(odd) {
+    background-color: hsl(var(--clr-gray-hs) calc(var(--clr-gray-l) + 40%));
+  }
+}
+
+.htmlEl {
+  & dt {
+    font-weight: var(--fw-7);
+  }
+
+  & .d-inline {
+    display: inline;
+  }
+
+  & a {
+    color: var(--clr-accent);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

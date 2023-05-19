@@ -1,0 +1,63 @@
+---
+// Utility functions
+import { calculateCardCount } from '../../js/utils';
+
+// Component Imports
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+
+// Data Imports
+import taxonomyData from '../../data/taxonomyData.json';
+
+// React Import
+import Slider from '../../components/slider/Slider';
+
+const title = `Products`;
+const subHeading = ``;
+
+const cardCount = calculateCardCount(taxonomyData, 'virtual');
+---
+
+<Layout title={title} subHeading={subHeading}>
+  <section>
+    <div>
+      <Slider numSlides={cardCount} client:visible>
+        {
+          taxonomyData
+            ?.sort((a, b) => a.name.localeCompare(b.name)) // sort by name
+            .map(data => {
+              return (
+                data.path &&
+                data.parentId == 'virtual' && (
+                  <Card heading={data.name} href={data.path} dark />
+                )
+              );
+            })
+        }
+      </Slider>
+    </div>
+
+    <!-- <div class="container">
+      {
+        taxonomyData?.map(card => (
+          <Card
+            date={card.date}
+            heading={card.name}
+            html={card.text}
+            image={card.image}
+          />
+        ))
+      }
+    </div> -->
+  </section>
+</Layout>
+
+<style>
+  section {
+    margin: 2em;
+  }
+
+  div {
+    margin: 0 12.2%;
+  }
+</style>
