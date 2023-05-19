@@ -1,0 +1,122 @@
+root: {
+  /* Alternet Colors  */
+  /* Alt: hsl(78, 45%, 89%)
+     Alt2: hsl(197, 40%, 88%)
+     Primary: hsl(189, 86%, 42%)
+     Accent hsl(173, 75%, 52%)
+  */
+
+  /* Primary hsl(216, 57%, 20%) */
+  --clr-primary-hs: 216 57%;
+  --clr-primary-l: 20%;
+  --clr-primary-hsl: var(--clr-primary-hs) var(--clr-primary-l);
+
+  --clr-primary: hsl(var(--clr-primary-hsl));
+
+  --clr-primary-dark: hsl(
+    var(--clr-primary-hs) calc(var(--clr-primary-l) - 10%)
+  );
+  --clr-primary-light: hsl(
+    var(--clr-primary-hs) calc(var(--clr-primary-l) + 10%)
+  );
+
+  /* Secondary hsla(190, 100%, 45%) */
+  --clr-secondary-hs: 190 100%;
+  --clr-secondary-l: 45%;
+  --clr-secondary-hsl: var(--clr-secondary-hs) var(--clr-secondary-l);
+
+  --clr-secondary: hsl(var(--clr-secondary-hsl));
+
+  /* Light hsla(194, 58%, 86%) */
+  --clr-light-hs: 194 58%;
+  --clr-light-l: 86%;
+  --clr-light-hsl: var(--clr-light-hs) var(--clr-light-l);
+
+  --clr-light: hsl(var(--clr-light-hsl));
+
+  /* Accent hsl(192 100% 24%)*/
+  --clr-accent-hs: 192 100%;
+  --clr-accent-l: 24%;
+  --clr-accent-hsl: var(--clr-accent-hs) var(--clr-accent-l);
+
+  --clr-accent: hsl(var(--clr-accent-hsl));
+
+  /* Black & White */
+  --clr-bw-hs: 0 0%;
+
+  /* Black hsl(0, 0%, 0%)*/
+  --clr-black-l: 0%;
+  --clr-black-hsl: var(--clr-bw-hs) var(--clr-black-l);
+
+  --clr-black: hsl(var(--clr-black-hsl));
+
+  /* White hsl(0, 0%, 100%) */
+  --clr-white-l: 100%;
+  --clr-white-hsl: var(--clr-bw-hs) var(--clr-white-l);
+
+  --clr-white: hsl(var(--clr-white-hsl));
+
+  /* Base hsl(220, 5%, 12%) */
+  --clr-base-hs: 220 5%;
+  --clr-base-l: 12%;
+  --clr-base-hsl: var(--clr-base-hs) var(--clr-base-l);
+
+  --clr-base: hsl(var(--clr-base-hsl));
+
+  /* Gray hsl(210, 5%, 57%) */
+  --clr-gray-hs: 210 5%;
+  --clr-gray-l: 57%;
+  --clr-gray-hsl: var(--clr-gray-hs) var(--clr-gray-l);
+
+  --clr-gray: hsl(var(--clr-gray-hsl));
+
+  /* Alerts */
+
+  /* Error hsl(8, 94%, 44%) */
+  --clr-error-hs: 8 94%;
+  --clr-error-l: 44%;
+  --clr-error-hsl: var(--clr-error-hs) var(--clr-error-l);
+
+  --clr-error: hsl(var(--clr-error-hsl));
+
+  /* Error 2 hsl(15, 100%, 60%) */
+  --clr-error-2-hs: 15 100%;
+  --clr-error-2-l: 60%;
+  --clr-error-2-hsl: var(--clr-error-2-hs) var(--clr-error-2-l);
+
+  --clr-error-2: hsl(var(--clr-error-2-hsl));
+
+  /* Info hsl(183, 60%, 82%) */
+  --clr-info-hs: 183 60%;
+  --clr-info-l: 82%;
+  --clr-info-hsl: var(--clr-info-hs) var(--clr-info-l);
+
+  --clr-info: hsl(var(--clr-info-hsl));
+
+  /* Success hsl(83, 62%, 64%) */
+  --clr-success-hs: 83 62%;
+  --clr-success-l: 64%;
+  --clr-success-hsl: var(-clr-success-hs) var(--clr-success-l);
+
+  --clr-success: hsl(var(--clr-success-hsl));
+
+  /* Warning hsl(60, 100%, 70%) */
+  --clr-warning-hs: 60 100%;
+  --clr-warning-l: 70%;
+  --clr-warning-hsl: var(--clr-warning-hs) var(--clr-warning-l);
+
+  --clr-warning: hsl(var(--clr-warngin-hsl));
+
+  /* TESTING */
+  /* @media (--dark-mode) {
+    --clr-primary-l: 80%;
+    --clr-secondary-l: 15%;
+    --clr-black-l: 100%;
+    --clr-accent-l: 76%;
+    --clr-base-l: 88%;
+
+    --clr-light-l: 24%;
+    --clr-white-l: 0%;
+    --clr-info-l: 22%;
+  } */
+}

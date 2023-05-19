@@ -1,0 +1,98 @@
+---
+// Library Imports
+import { Icon } from 'astro-icon';
+
+// Utility functions
+import { changeDateFormat } from '../js/utils.js';
+
+// Fetching alerts
+const response = await fetch('https://www.ncei.noaa.gov/alerts/api');
+const alerts = await response.json();
+
+// Props
+export interface Props {
+  body?: string;
+  created?: string;
+  updated?: string;
+  ended?: string;
+  alertType?: string;
+  url?: string;
+}
+const { body, created, ended, alertType, url } = Astro.props as Props;
+
+let alertReferenceUrl = 'news';
+let alertBody = body.replace(/(<([^>]+)>)/gi, '');
+
+// Dates
+
+let todayDate = new Date();
+todayDate = changeDateFormat(todayDate);
+let alertCreatedDate = changeDateFormat(created);
+let alertEndDate = changeDateFormat(ended);
+
+let currentPath = Astro.url.pathname.replace('/', '');
+
+// Dynamicly Changing styles
+let iconName, className, alertClassName;
+
+if (todayDate == alertEndDate || currentPath != alertReferenceUrl)
+  alertClassName = 'sr-only';
+
+if (alertType == 'severity-high')
+  (iconName = 'mdi:lightning-bolt'), (className = 'error');
+
+if (alertType == 'severity-medium')
+  (iconName = 'mdi:alert'), (className = 'warning');
+
+if (alertType == 'severity-low')
+  (iconName = 'mdi:lightbulb'), (className = 'info');
+
+if (alertType == 'success') (iconName = 'mdi:check'), (className = 'success');
+---
+
+<div class:list={`alert ${className}`}>
+  <Icon name={iconName} width="30" color="var(--clr-base)" />
+  <p>
+    <span>{alertCreatedDate}:</span>
+    {alertBody}
+    {url}
+  </p>
+</div>
+
+<style>
+  .error {
+    --alert-bg-hs: var(--clr-error-hs);
+    --alert-bg-l: var(--clr-error-l);
+    --alert-bg: hsl(var(--alert-bg-hs) var(--alert-bg-l));
+  }
+  .info {
+    --alert-bg-hs: var(--clr-info-hs);
+    --alert-bg-l: var(--clr-info-l);
+    --alert-bg: hsl(var(--alert-bg-hs) var(--alert-bg-l));
+  }
+  .warning {
+    --alert-bg-hs: var(--clr-warning-hs);
+    --alert-bg-l: var(--clr-warning-l);
+    --alert-bg: hsl(var(--alert-bg-hs) var(--alert-bg-l));
+  }
+  .success {
+    --alert-bg-hs: var(--clr-success-hs);
+    --alert-bg-l: var(--clr-success-l);
+    --alert-bg: hsl(var(--alert-bg-hs) var(--alert-bg-l));
+  }
+
+  .alert {
+    background-color: hsl(var(--alert-bg-hs) calc(var(--alert-bg-l) + 30%));
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    border-left: 15px solid var(--alert-bg);
+    margin-bottom: 5rem;
+  }
+
+  span {
+    font-weight: var(--fw-7);
+  }
+</style>

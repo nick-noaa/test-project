@@ -1,0 +1,103 @@
+---
+// Utility functions
+// import { filteredByParentId } from '../js/utils';
+
+// Compopent Imports
+import Link from './Link.astro';
+import MobileButton from './MobileButton.astro';
+
+// Data Imports
+import navData from '../data/navData.json';
+---
+
+<MobileButton />
+<nav aria-label="Primary">
+  <ul id="primary-navigation" data-visible="false">
+    {
+      navData?.map(item =>
+        //TESTING
+        item.parent == '' &&
+        item.id !== 'menu_link_content:31432029-32f7-4015-81a6-e402aded0827' ? (
+          <li>
+            <Link
+              label={item.text}
+              href={item.href}
+              classes="glow"
+              style="primary"
+              type="nav"
+              data-navLink
+              dropDown={
+                item.id ===
+                  'menu_link_content:bf4c8e9f-12e7-4147-a9e1-707a8732961d' ||
+                item.id ===
+                  'menu_link_content:272ae768-5401-49f1-83e4-a4ed15fc0cac' ||
+                item.id ===
+                  'menu_link_content:e034d3f3-2a7e-44b5-8770-0d10e2c17b3f'
+                  ? true
+                  : false
+              }
+              label={
+                item.id === 'bf4c8e9f-12e7-4147-a9e1-707a8732961d'
+                  ? 'Press enter to skip dropdown'
+                  : item.text
+              }
+            />
+          </li>
+        ) : (
+          ''
+        )
+      )
+    }
+    <div class="animation start-home"></div>
+  </ul>
+</nav>
+
+<style>
+  ul {
+    --lightness: var(--clr-black-l);
+    --shade: 0.5;
+    --background: hsl(var(--clr-bw-hs) var(--lightness) / var(--shade));
+
+    display: flex;
+    gap: var(--gap, 1em);
+    list-style: none;
+
+    /* TESTING */
+    /* position: relative; */
+
+    @media (--tablet) {
+      --gap: 2em;
+      position: fixed;
+      inset: 0 0 0 55%;
+      flex-direction: column;
+      padding: min(30vh, 15rem) 2em;
+      background: var(--background);
+      transform: translateX(100%);
+      transition: transform 350ms ease-out;
+      @supports (backdrop-filter: blur(1rem)) {
+        --lightness: var(--clr-white-l);
+        --shade: 0.3;
+
+        background: var(--background);
+        backdrop-filter: blur(1rem);
+      }
+    }
+    @media (--phone) {
+      --gap: clamp(1.5rem, 5vw, 3rem);
+      padding-top: 8em;
+      /* padding-inline: clamp(3rem, 7vw, 10rem); */
+      inset: 0 0 0 30%;
+    }
+
+    @media (--tiny) {
+      inset: 0 0 0 0%;
+      text-align: center;
+    }
+
+    &[data-visible='true'] {
+      @media (--tablet) {
+        transform: translateX(0%);
+      }
+    }
+  }
+</style>

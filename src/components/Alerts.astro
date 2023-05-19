@@ -1,0 +1,99 @@
+---
+// Library Imports
+import { Icon } from 'astro-icon';
+
+// Utility functions
+import { changeDateFormat } from '../js/utils.js';
+
+// Props
+export interface Props {
+  body?: string;
+  created?: Date;
+  updated?: Date;
+  ended?: Date;
+  alertType?: string;
+  path?: string;
+}
+const { body, created, ended, alertType, path } = Astro.props as Props;
+
+let iconName = 'mdi:emoticon-sad-outline',
+  className: string,
+  alertBody = body.replace(/(<([^>]+)>)/gi, ''),
+  todayDate = new Date(),
+  alertCreatedDate = changeDateFormat(created),
+  alertEndDate = new Date(ended),
+  alertReferenceUrl = path,
+  currentPath = Astro.url.pathname;
+
+//TESTING NEED TO DELETE.
+alertReferenceUrl = '/news/';
+let alertReferenceUrl2 = '/news';
+// let alertReferenceUrl3 = alertReferenceUrl.replace('/', '').replace(/\/+$/, '');
+
+// Dynamicly Changing styles
+if (
+  todayDate >= alertEndDate ||
+  (currentPath != alertReferenceUrl && currentPath != alertReferenceUrl2)
+) {
+  className = 'sr-only';
+} else {
+  if (alertType == 'severity-high')
+    (iconName = 'mdi:lightning-bolt'), (className = 'error');
+
+  if (alertType == 'severity-medium')
+    (iconName = 'mdi:alert'), (className = 'warning');
+
+  if (alertType == 'severity-low')
+    (iconName = 'mdi:lightbulb'), (className = 'info');
+
+  if (alertType == 'success') (iconName = 'mdi:check'), (className = 'success');
+}
+---
+
+<div class:list={`alert ${className}`}>
+  <Icon name={iconName} width="30" color="var(--clr-base)" />
+  <p>
+    <span>{alertCreatedDate}:</span>
+    {alertBody}
+  </p>
+</div>
+
+<style>
+  .error {
+    --bg-hs: var(--clr-error-hs);
+    --bg-l: var(--clr-error-l);
+    --border: hsl(var(--bg-hs) var(--bg-l));
+  }
+  .info {
+    --bg-hs: var(--clr-info-hs);
+    --bg-l: var(--clr-info-l);
+    --border: hsl(var(--bg-hs) var(--bg-l));
+  }
+  .warning {
+    --bg-hs: var(--clr-warning-hs);
+    --bg-l: var(--clr-warning-l);
+    --border: hsl(var(--bg-hs) var(--bg-l));
+  }
+  .success {
+    --bg-hs: var(--clr-success-hs);
+    --bg-l: var(--clr-success-l);
+    --border: hsl(var(--bg-hs) var(--bg-l));
+  }
+
+  .alert {
+    background-color: hsl(var(--bg-hs) calc(var(--bg-l) + 25%));
+    padding: 1em;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    border-left: 15px solid var(--border);
+    margin-bottom: 5rem;
+    box-shadow: 0px 0.3px 1.5px rgba(0, 0, 0, 0.02),
+      0px 1.1px 4.9px rgba(0, 0, 0, 0.03), 0px 5px 22px rgba(0, 0, 0, 0.05);
+  }
+
+  span {
+    font-weight: var(--fw-7);
+  }
+</style>

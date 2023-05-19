@@ -1,0 +1,92 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": {
+    "type": "node--generic_product_dataset",
+    "id": "43b3eb5e-2b33-4ab7-885f-d844e6d19895",
+    "links": {
+      "self": {
+        "href": "http://drupal10.dev.ncei.noaa.mobomo.net/jsonapi/node/generic_product_dataset/43b3eb5e-2b33-4ab7-885f-d844e6d19895?resourceVersion=id%3A40056"
+      }
+    },
+    "attributes": {
+      "drupal_internal__nid": 2015,
+      "drupal_internal__vid": 40056,
+      "langcode": "en",
+      "revision_timestamp": "2023-02-09T17:59:12+00:00",
+      "revision_log": null,
+      "status": true,
+      "title": "World Magnetic Model (WMM)",
+      "created": "2022-02-08T14:08:06+00:00",
+      "changed": "2023-02-09T17:59:12+00:00",
+      "promote": false,
+      "sticky": false,
+      "default_langcode": true,
+      "revision_translation_affected": true,
+      "moderation_state": "published",
+      "ds_switch": null,
+      "metatag": null,
+      "path": {
+        "alias": "/products/world-magnetic-model",
+        "pid": 2431,
+        "langcode": "en"
+      },
+      "body": {
+        "value": "<div class=\"row\">\r\n<div class=\"col-md-8\">\r\n<p>The World Magnetic Model (WMM) is the standard model for navigation, altitude, and heading referencing systems using the geomagnetic field. Additional WMM uses include civilian applications, including navigation and heading systems.</p>\r\n\r\n<p>The model is a joint product of the United States’ National Geospatial-Intelligence Agency (NGA) and the United Kingdom’s Defence Geographic Centre (DGC). NCEI and the British Geological Survey (BGS) jointly developed the WMM. The U.S. Department of Defense, the U.K. Ministry of Defence, the North Atlantic Treaty Organization (NATO), and the International Hydrographic Organization (IHO) use the WMM.</p>\r\n\r\n<p><a class=\"btn btn-primary btn-sm\" href=\"https://repository.library.noaa.gov/view/noaa/47960\">View WMM Annual Report</a></p>\r\n</div>\r\n\r\n<div class=\"col-md-4\"><img alt=\"decorative-image\" class=\"fluid-responsive\" src=\"https://www.ncei.noaa.gov/sites/default/files/2022-02/Miller%20Projection%20Main%20Field-%20Annual%20Change%20Declination%20%28D%29.jpg\" /></div>\r\n</div>\r\n",
+        "format": "full_html",
+        "processed": "<div class=\"row\">\n<div class=\"col-md-8\">\n<p>The World Magnetic Model (WMM) is the standard model for navigation, altitude, and heading referencing systems using the geomagnetic field. Additional WMM uses include civilian applications, including navigation and heading systems.</p>\n<p>The model is a joint product of the United States’ National Geospatial-Intelligence Agency (NGA) and the United Kingdom’s Defence Geographic Centre (DGC). NCEI and the British Geological Survey (BGS) jointly developed the WMM. The U.S. Department of Defense, the U.K. Ministry of Defence, the North Atlantic Treaty Organization (NATO), and the International Hydrographic Organization (IHO) use the WMM.</p>\n<p><a class=\"btn btn-primary btn-sm\" href=\"https://repository.library.noaa.gov/view/noaa/47960\">View WMM Annual Report</a></p>\n</div>\n<div class=\"col-md-4\"><img alt=\"decorative-image\" class=\"fluid-responsive\" src=\"https://www.ncei.noaa.gov/sites/default/files/2022-02/Miller%20Projection%20Main%20Field-%20Annual%20Change%20Declination%20%28D%29.jpg\" /></div>\n</div>\n",
+        "summary": ""
+      },
+      "field_display_rank": null,
+      "field_external_product_link": null,
+      "field_hero_image_credit": null,
+      "field_subtitle_formatted": null
+    },
+    "relationships": {
+      "node_type": {
+        "data": {},
+        "links": {}
+      },
+      "revision_uid": {},
+      "uid": {},
+      "field_accordion": {},
+      "field_acknowledgements": {},
+      "field_cards": {},
+      "field_category_subcategory": {},
+      "field_image_text_group": {},
+      "field_parameters": {},
+      "field_product_instrument_tool": {},
+      "field_product_sectors": {},
+      "field_product_type": {},
+      "field_responsive_hero_image": {},
+      "field_tabs_section": {
+        "data": [],
+        "links": {
+          "related": {
+            "href": "http://drupal10.dev.ncei.noaa.mobomo.net/jsonapi/node/generic_product_dataset/43b3eb5e-2b33-4ab7-885f-d844e6d19895/field_tabs_section?resourceVersion=id%3A40056"
+          },
+          "self": {}
+        }
+      },
+      "field_tags": {
+        "data": [{}],
+        "links": {
+          "related": {
+            "href": "http://drupal10.dev.ncei.noaa.mobomo.net/jsonapi/node/generic_product_dataset/43b3eb5e-2b33-4ab7-885f-d844e6d19895/field_tags?resourceVersion=id%3A40056"
+          },
+          "self": {}
+        }
+      },
+      "field_text_block": {}
+    }
+  },
+  "links": {}
+}

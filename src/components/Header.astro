@@ -1,0 +1,56 @@
+---
+// Library Imports
+
+// Component Imports
+import Navigation from './Navigation.astro';
+import Search from './Search.astro';
+import Logo from './Logo.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header>
+  <a class="sr-only" href="#main-content">Skip Navigation</a>
+
+  <div>
+    <Logo />
+    <Navigation />
+
+    {currentPath !== '/' && <Search />}
+  </div>
+</header>
+
+<style>
+  header {
+    position: relative;
+    width: 100%;
+    z-index: 1000;
+    background: var(--clr-white);
+
+    & div {
+      --color-hs: var(--clr-base-hs);
+      --color-l: var(--clr-base-l);
+      --color: hsl(var(--color-hs) var(--color-l));
+      --border-size: 2px;
+      --font-size: var(--fs-3);
+      --size: 3.5rem;
+      --width: 18rem;
+      --display: none;
+      --left: 4.5rem;
+      --top: -2.4rem;
+      --padding: 0 0.5em 0 25%;
+
+      display: flex;
+      gap: var(--gap, 0.5rem);
+      margin: 2rem;
+      align-items: center;
+      justify-content: space-around;
+      @media (--desktop) {
+        margin-inline: 2.5rem;
+      }
+      @media (--tablet) {
+        justify-content: space-between;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+// Component Imports
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Alerts from '../components/Alerts.astro';
+import Footer from '../components/Footer.astro';
+
+import alertData from '../data/alertData.json';
+import '../styles/global.css';
+
+// const { heading, paragraph } = Astro.props;
+export interface Props {
+  title?: string;
+  heading?: string;
+  subHeading?: string;
+}
+const {
+  title = `National Centers for Environmental Information`,
+  heading = title,
+  subHeading = `NOAA’s National Centers for Environmental Information (NCEI) hosts and provides public access to one of the most significant archives for environmental data on Earth. We provide over 37 petabytes of comprehensive atmospheric, coastal, oceanic, and geophysical data.
+
+`,
+} = Astro.props as Props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;1,300;1,700&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title} | NCEI</title>
+  </head>
+  <body>
+    <Header />
+    <Hero heading={heading} subHeading={subHeading} />
+
+    {
+      alertData?.map(alert => (
+        <Alerts
+          body={alert.body}
+          created={alert.created}
+          updated={alert.updated}
+          ended={alert.ended}
+          alertType={alert.alertType}
+        />
+      ))
+    }
+    <slot />
+  </body>
+
+  <Footer />
+</html>

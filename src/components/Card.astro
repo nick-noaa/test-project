@@ -1,0 +1,263 @@
+---
+// Props Imports
+import { CommonProps } from './Props';
+
+// Library Imports
+import { Image } from '@astrojs/image/components';
+
+// Component Imports
+import Link, { linkProps } from './Link.astro';
+import Tabs, { tabProps } from './Tabs.astro';
+
+// Props
+export interface cardProps extends CommonProps {
+  type?: 'news' | 'taximony' | 'other';
+  date?: string;
+  bgImage?: {
+    src: string;
+    alt: string;
+  };
+  button?: linkProps;
+  tabs?: tabProps;
+}
+const {
+  heading,
+  body,
+  htmlEl,
+  date,
+  href,
+  style = 'secondary',
+  images,
+  bgImage,
+  width = 398,
+  height = 200,
+  dark = false,
+  type = 'news',
+  classes,
+  button,
+  tabs,
+  ...rest
+} = Astro.props as cardProps;
+
+const { side = 'top' } = images || {};
+
+const widthPx = width + 'px';
+const heightPx = height + 'px';
+---
+
+<article
+  class:list={[
+    classes,
+    style,
+    type,
+    { dark: dark, tabs: tabs, bgImage: bgImage },
+  ]}
+  {...rest}
+>
+  {
+    bgImage && (
+      <Image
+        src={bgImage.src}
+        alt="testing"
+        width={width}
+        height={height}
+        format="webp"
+        fit="cover"
+        loading="lazy"
+      />
+    )
+  }
+  {
+    images && images.side !== 'right' && (
+      <figure>
+        <Image
+          src={images.src}
+          alt={images.alt}
+          width={width}
+          height={height}
+          format="webp"
+          fit="cover"
+          loading="lazy"
+        />
+      </figure>
+    )
+  }
+
+  {
+    tabs ? (
+      <>
+        <h2>{heading}</h2>
+        <Tabs
+          type="card"
+          side="top"
+          label={tabs.label}
+          body={tabs.body}
+          fieldId={tabs.fieldId}
+          id={tabs.id}
+          ariaLabel={tabs.ariaLabel}
+          toolTip={tabs.toolTip}
+          shortText={tabs.shortText}
+        />
+        {button && (
+          <Link
+            label={button.label}
+            href={button.href}
+            style={button.style}
+            type={button.type}
+          />
+        )}
+      </>
+    ) : (
+      <div class="body">
+        {type === 'other' && ''}
+        {type === 'news' && <p class="date">{date}</p>}
+
+        <h3>{heading}</h3>
+
+        {body && <p>{body}</p>}
+        <slot />
+
+        {htmlEl && <Fragment set:html={htmlEl} />}
+
+        {button && (
+          <Link
+            label={button.label}
+            href={button.href}
+            style={button.style}
+            type={button.type}
+          />
+        )}
+      </div>
+    )
+  }
+
+  {
+    images && images.side === 'right' && (
+      <figure>
+        <Image
+          src={images.src}
+          alt={images.alt}
+          width={width}
+          height={height}
+          format="webp"
+          fit="cover"
+        />
+      </figure>
+    )
+  }
+
+  {href && <a class="click" href={href} />}
+</article>
+
+<style define:vars={{ widthPx, heightPx }}>
+  article {
+    --width: var(--widthPx);
+    --height: var(--heightPx);
+
+    overflow: hidden;
+    max-width: var(--width);
+    background-color: var(--backgroundColor, var(--clr-white));
+    box-shadow: var(
+      --box-shadow,
+      0.3px 0.3px 1.5px rgba(0, 0, 0, 0.02),
+      1.1px 1.1px 4.9px rgba(0, 0, 0, 0.03),
+      5px 5px 22px rgba(0, 0, 0, 0.05)
+    );
+
+    border-radius: 8px;
+
+    &:is(:hover) > figure {
+      transform: scale(1.025);
+    }
+
+    & figure {
+      transition: 200ms transform ease-in-out;
+      height: var(--height);
+
+      & img {
+        border-radius: 8px 0 0;
+      }
+    }
+
+    & .body {
+      padding: 2em;
+      display: flex;
+      flex-direction: column;
+      justify-content: var(--align, space-between);
+      max-width: var(--width);
+      position: relative;
+      gap: 0.5em;
+
+      & .date {
+        font-weight: var(--fw-3);
+        text-transform: uppercase;
+        color: var(--clr-primary);
+      }
+    }
+    &:has(.click) {
+      position: relative;
+
+      &:is(:hover, :focus) {
+        --backgroundColor: var(--clr-accent);
+      }
+
+      & .click::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    &.bgImage {
+      position: relative;
+
+      & img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      & .body {
+        --lightness: var(--clr-black-l);
+        --shade: 0.4;
+        --background: hsl(var(--clr-bw-hs) var(--lightness) / var(--shade));
+        --align: center;
+
+        position: relative;
+        background: var(--background);
+
+        @supports (backdrop-filter: blur(1rem)) {
+          backdrop-filter: blur(0.3rem);
+        }
+      }
+    }
+
+    &.news {
+      /* display: grid; */
+    }
+
+    &.tabs {
+      --width: 70%;
+      padding: 2em;
+      margin: 0 auto;
+      --backgroundColor: var(--clr-white);
+
+      @media (--tablet) {
+        max-width: 100%;
+      }
+
+      text-align: center;
+    }
+
+    &.dark {
+      --backgroundColor: var(--clr-primary);
+      color: var(--clr-white);
+    }
+
+    &.transparent {
+      --backgroundColor: transparent;
+      --box-shadow: none;
+    }
+  }
+</style>

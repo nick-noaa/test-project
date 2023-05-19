@@ -1,0 +1,40 @@
+---
+// Component Imports
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+import cardData from '../data/cardData.json';
+
+const title = `About`;
+const subHeading = `Astro Test About`;
+---
+
+<Layout title={title} subHeading={subHeading}>
+  <section class="">
+    <div class="flex container">
+      {
+        cardData?.map(card => (
+          <Card
+            date={card.date}
+            heading={card.heading}
+            body={card.body}
+            images={card.image}
+          />
+        ))
+      }
+      {
+        cardData?.map(card => (
+          <Card
+            heading={card.heading}
+            body={card.body}
+            button={{ text: 'More Info', href: '/about' }}
+          />
+        ))
+      }
+      {
+        cardData?.map(card => (
+          <Card heading={card.heading} href="/about" dark />
+        ))
+      }
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,119 @@
+---
+// import { Icon } from 'astro-icon';
+---
+
+<button
+  class="mobile-nav-toggle"
+  id="menu-toggle"
+  aria-controls="primary-navigation"
+  aria-expanded="false"
+>
+  <span class="sr-only">Menu</span>
+
+  <!-- <Icon name="mdi:menu" width="50" /> -->
+
+  <svg
+    aria-hidden="true"
+    version="1.1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    x="0px"
+    y="0px"
+    viewBox="0 0 100 100"
+  >
+    <g class="mobile-nav-toggle__svg">
+      <path class="line line-1" d="M5 13h90v14H5z"></path>
+      <path class="line line-2" d="M5 43h90v14H5z"></path>
+      <path class="line line-3" d="M5 73h90v14H5z"></path>
+    </g>
+  </svg>
+</button>
+
+<style>
+  .mobile-nav-toggle {
+    display: none;
+    padding: 1em;
+
+    @media (--tablet) {
+      display: block;
+      position: absolute;
+      aspect-ratio: 1;
+      right: 2rem;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      color: var(--clr-base);
+      cursor: pointer;
+      display: inline-block;
+      padding: 1em 1.5em;
+      text-transform: uppercase;
+      transition: all 0.25s ease-in-out;
+      z-index: 9999;
+    }
+
+    &:focus {
+      outline: transparent;
+    }
+    &.opened {
+      .mobile-nav-toggle__svg {
+        & .line-1 {
+          transform: rotate(45deg) translateY(0) translateX(0);
+        }
+        & .line-2 {
+          opacity: 0;
+        }
+        & .line-3 {
+          transform: rotate(-45deg) translateY(0em) translateX(0em);
+        }
+      }
+    }
+    & svg {
+      display: inline-block;
+      fill: currentColor;
+      vertical-align: middle;
+      position: relative;
+      top: -0.0625em;
+      width: 2em;
+      height: 2em;
+      top: 0;
+    }
+
+    & .mobile-nav-toggle__svg {
+      & .line {
+        opacity: 1;
+        transform: rotate(0) translateY(0) translateX(0);
+        transform-origin: 1em 1em;
+        transition: transform 0.3s ease-in-out, opacity 0.2s ease-in-out;
+      }
+      & .line-1 {
+        transform-origin: 1em 2.5em;
+      }
+      & .line-3 {
+        transform-origin: 1em 4.5em;
+      }
+    }
+  }
+</style>
+
+<script>
+  const primaryNav = document.getElementById('primary-navigation');
+  const navToggle = document.getElementById('menu-toggle');
+  navToggle.addEventListener('click', () => {
+    const visibility = primaryNav.getAttribute('data-visible');
+    if (visibility === 'false') {
+      primaryNav.setAttribute('data-visible', 'true');
+      navToggle.setAttribute('aria-expanded', 'true');
+    } else {
+      primaryNav.setAttribute('data-visible', 'false');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+    // Toggle class "opened". Set also aria-expanded to true or false.
+    if (-1 !== navToggle.className.indexOf('opened')) {
+      navToggle.className = navToggle.className.replace(' opened', '');
+      navToggle.setAttribute('aria-expanded', 'false');
+    } else {
+      navToggle.className += ' opened';
+      navToggle.setAttribute('aria-expanded', 'true');
+    }
+  });
+</script>

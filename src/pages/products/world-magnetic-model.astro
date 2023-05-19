@@ -1,0 +1,167 @@
+---
+// Utility functions
+
+// Component Imports
+import Layout from '../../layouts/Layout.astro';
+import Tabs from '../../components/Tabs.astro';
+
+// Data Imports
+import pageData from '../../data/pageData.json';
+import tabData from '../../data/tabData.json';
+import imageData from '../../data/imageData.json';
+
+const worldMagneticModelData = (await pageData(
+  'node',
+  'generic_product_dataset',
+  '43b3eb5e-2b33-4ab7-885f-d844e6d19895'
+)) as {
+  id?: string;
+  internalNid?: string;
+  title?: string;
+  body?: string;
+  tabs?: Array<{ id?: string; targetId?: string }>;
+};
+
+const pageId = worldMagneticModelData?.internalNid;
+const pageTitle = worldMagneticModelData?.title;
+const pageBody = worldMagneticModelData?.body;
+const tabIds = worldMagneticModelData?.tabs?.map(tab => tab.id);
+// const tabTargetIds = worldMagneticModelData?.tabs?.map(tab => tab.targetId);
+
+const tabs = await Promise.all(tabIds.map(tabId => tabData(tabId)));
+const tabId = tabs?.map(tab => tab.id);
+const tabInternalId = tabs?.map(tab => tab.internalId);
+const tabTitle = tabs?.map(tab => tab.title);
+const tabBody = tabs?.map(tab => tab.body);
+const fieldIds = tabs?.map(tab => tab.fields?.map(field => field.id)).flat();
+// const fieldTargetIds = tabs?.map(tab => tab.fields?.map(field => field.targetId)).flat();
+// const fieldType = tabs?.map(tab => tab.fields?.map(field => field.type)).flat();
+
+const fields = await Promise.all(fieldIds.map(fieldId => tabData(fieldId)));
+const fieldId = fields?.map(field => field.id);
+const fieldInternalId = fields?.map(field => field.internalId);
+const fieldParentId = fields?.map(field => field.parentId);
+
+const accordionTitle = fields?.map(field => field.accordionTitle);
+const accordionBody = fields?.map(field => field.accordionBody);
+
+const paragraphBody = fields?.map(field => field.paragraphBody);
+
+const acknowledgementTitle = fields.map(field => field.acknowledgementTitle);
+const acknowledgementBody = fields.map(field => field.acknowledgementBody);
+
+const acknowledgementImageIds = fields
+  ?.map(field => field.acknowledgementImages?.map(image => image.id))
+  .flat();
+
+const acknowledgementImageTargetIds = fields
+  ?.map(field => field.acknowledgementImages?.map(image => image.targetId))
+  .flat();
+
+const acknowledgementImageTypes = fields
+  ?.map(field => field.acknowledgementImages?.map(image => image.type))
+  .flat();
+
+const acknowledgementImagesAlt = fields
+  ?.map(field => field.acknowledgementImages?.map(image => image.alt))
+  .flat();
+
+const acknowledgementImagesWidth = fields
+  ?.map(field => field.acknowledgementImages?.map(image => image.width))
+  .flat();
+
+const acknowledgementImagesHeight = fields
+  ?.map(field => field.acknowledgementImages?.map(image => image.height))
+  .flat();
+
+const images = (await Promise.all(
+  acknowledgementImageIds.map(imageId => imageData(imageId))
+)) as Array<{
+  id?: string;
+  internalId?: string;
+  name?: string;
+  url?: string;
+}>;
+
+const imageId = images.map(img => img.id);
+const imageInternalId = images.map(img => img.internalId);
+const imageName = images.map(img => img.name);
+const imageAlt = acknowledgementImagesAlt;
+
+// const imageWidth = acknowledgementImagesWidth.join('; ');
+const imageWidth = '200';
+// const imageHeight = acknowledgementImagesHeight.join('; ');
+const imageHeight = '200';
+
+const imageUri = images.map(img => img.url).join('');
+//TESTING Remove this url when site complete with image relative paths.
+const imageUrl = `http://drupal10.dev.ncei.noaa.mobomo.net${imageUri}`;
+
+// TESTING Remove this when helper texted (tooltip, aria-label) is passed from API.
+const helperText = [
+  'Software to measure the WMM',
+  'Calculate WMM components and intensity',
+  'Contour maps for WMM Components',
+  'WMM background information',
+  'WMM Accuracy and Limitations',
+  'Reports and sample code',
+];
+
+const title = pageTitle;
+const subHeading = ``;
+---
+
+<Layout title={title} subHeading={subHeading}>
+  <section>
+    <div class="container gap">
+      <h2>{pageTitle}</h2>
+      <div class="htmlEl" set:html={pageBody} />
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <Tabs
+        htmlEl
+        label={tabTitle}
+        body={tabBody}
+        fieldId={fieldIds}
+        id={tabInternalId}
+        paragraph={paragraphBody}
+        ariaLabel={helperText}
+        toolTip
+        acknowledgements={{
+          title: acknowledgementTitle,
+          body: acknowledgementBody,
+          imageId: acknowledgementImageTargetIds,
+          images: {
+            id: imageId,
+            InternalId: imageInternalId,
+            name: imageName,
+            src: imageUrl,
+            alt: imageAlt,
+            width: imageWidth,
+            height: imageHeight,
+          },
+        }}
+        accordion={{
+          id: fieldId,
+          parentId: fieldParentId,
+          title: accordionTitle,
+          child: accordionBody,
+        }}
+      />
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  .gap .htmlEl .row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+
+    @media (--tablet) {
+      grid-template-columns: 2fr;
+    }
+  }
+</style>

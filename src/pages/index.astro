@@ -1,0 +1,170 @@
+---
+// Utility functions
+import { calculateCardCount } from '../js/utils';
+
+// Component Imports
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+
+// Data Imports
+import taxonomyData from '../data/taxonomyData.json';
+import accessToolData from '../data/accessToolData.json';
+import cardData from '../data/cardData.json';
+
+// React Import
+import Slider from '../components/slider/Slider';
+
+const productCount = calculateCardCount(taxonomyData, 'virtual');
+---
+
+<Layout>
+  <section class="access">
+    <div class="container">
+      <h2>Access Data</h2>
+      <Slider numSlides={8} client:visible>
+        {
+          accessToolData?.map(data => {
+            return <Card heading={data.title} href={data.link} dark />;
+          })
+        }
+      </Slider>
+    </div>
+  </section>
+
+  <section class="service">
+    <div class="container">
+      <Card
+        heading="NCEI Services"
+        tabs={{
+          label: cardData.map(heading => heading.heading),
+          body: cardData.map(heading => heading.body),
+          ariaLabel: cardData.map(heading => heading.heading),
+        }}
+        button={{ label: 'Climate at a Glance', href: '/about' }}
+      />
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="container">
+      <h2>Featured Products</h2>
+      <Slider numSlides={productCount} client:visible>
+        {
+          taxonomyData?.map(data => {
+            return (
+              data.path &&
+              data.parentId == 'virtual' && (
+                <Card
+                  bgImage={{
+                    src: `https://picsum.photos/600/300?random=${
+                      Math.floor(Math.random() * 801) + 100
+                    }`,
+                  }}
+                  heading={data.name}
+                  href={data.path}
+                  dark
+                />
+              )
+            );
+          })
+        }
+      </Slider>
+    </div>
+  </section>
+
+  <section class="news">
+    <div class="container">
+      <h2>Latest News</h2>
+    </div>
+    <div class="flex">
+      {
+        cardData?.map(card => (
+          <Card
+            type="news"
+            style="transparent"
+            date={card.date}
+            heading={card.heading}
+            body={card.body}
+            images={{
+              src: `https://picsum.photos/600/300?random=${
+                Math.floor(Math.random() * 801) + 100
+              }`,
+              alt: 'Testing Image',
+            }}
+          />
+        ))
+      }
+      {
+        cardData?.map(card => (
+          <Card
+            type="news"
+            style="transparent"
+            date={card.date}
+            heading={card.heading}
+            body={card.body}
+            images={{
+              src: `https://picsum.photos/600/300?random=${
+                Math.floor(Math.random() * 801) + 100
+              }`,
+              alt: 'Testing Image',
+            }}
+          />
+        ))
+      }
+      {
+        cardData?.map(card => (
+          <Card
+            type="news"
+            style="transparent"
+            date={card.date}
+            heading={card.heading}
+            body={card.body}
+            images={{
+              src: `https://picsum.photos/600/300?random=${
+                Math.floor(Math.random() * 801) + 100
+              }`,
+              alt: 'Testing Image',
+            }}
+          />
+        ))
+      }
+    </div>
+  </section>
+</Layout>
+
+<style>
+  section {
+    padding: 2em;
+
+    @media (--tablet) {
+      padding-inline: 0;
+    }
+
+    &.access {
+      .container {
+        margin: 0 12.5%;
+
+        @media (--tablet) {
+          margin-inline: 5%;
+        }
+      }
+    }
+
+    &.service {
+      /* background-color: hsla(197, 40%, 88%, 1); */
+      /* background-color: var(--clr-light); */
+      background-color: hsl(var(--clr-light-hs) calc(var(--clr-light-l) + 5%));
+    }
+
+    &.products {
+      .container {
+        margin: 0 13%;
+      }
+    }
+    &.news {
+      background-color: hsla(78, 45%, 89%, 1);
+      /* background-color: var(--clr-gray);
+      background-color: hsl(var(--clr-gray-hs) calc(var(--clr-gray-l) + 20%)); */
+    }
+  }
+</style>

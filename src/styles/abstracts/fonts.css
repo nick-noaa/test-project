@@ -1,0 +1,26 @@
+root: {
+  /* Typography */
+  --ff-display: 'Merriweather', serif;
+  /* --ff-body: 'Source Sans Pro', sans-serif; */
+
+  --ff-body: 'Open Sans', sans-serif;
+
+  /* Weight */
+  --fw-1: 100;
+  --fw-2: 200;
+  --fw-3: 300;
+  --fw-4: 400;
+  --fw-5: 500;
+  --fw-6: 600;
+  --fw-7: 700;
+  --fw-8: 800;
+  --fw-9: 900;
+
+  /* Font Size */
+  --fs-1: 1.4rem;
+  --fs-2: 2rem;
+  --fs-3: clamp(1.62rem, calc(1.49rem + 0.65vw), 1.95rem);
+  --fs-4: clamp(1.8rem, calc(1.59rem + 1.06vw), 2.34rem);
+  --fs-5: clamp(2.16rem, calc(1.78rem + 1.88vw), 3.13rem);
+  --fs-6: clamp(2.7rem, calc(1.62rem + 5.4vw), 5.47rem);
+}
