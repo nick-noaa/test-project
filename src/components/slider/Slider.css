@@ -1,0 +1,93 @@
+/* Slider container */
+.slider {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 200px;
+
+  /* Individual slide item */
+  & .item {
+    min-height: 20rem;
+    min-width: 30rem;
+    padding: 4rem 3rem;
+    display: flex;
+    position: absolute;
+    height: 100%;
+
+    /* Slot content within the slide */
+    & astro-slot > * {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 250px;
+    }
+  }
+
+  /* Inner slider container */
+  & .inner-slider astro-slot {
+    display: flex;
+    gap: 1.4em;
+  }
+}
+
+/* Slider navigation controls container */
+.slider-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  /* Slider navigation control button */
+  & button {
+    --bg-hs: var(--clr-bw-hs);
+    --bg-l: var(--clr-white-l);
+    margin: 0 10px;
+    background-color: hsl(var(--bg-hs) var(--bg-l));
+
+    cursor: pointer;
+
+    border-radius: 3rem;
+    color: var(--clr-base);
+    font-weight: var(--fw-6);
+    padding: 0.5em 1em;
+
+    &:is(:hover, :focus) {
+      box-shadow: 0px 0px 28px hsl(var(--bg-hs) calc(var(--bg-l) - 30%));
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) + 10%));
+    }
+
+    &:is(:active) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) - 3%));
+    }
+
+    &:is(:disabled) {
+      box-shadow: none;
+      background-color: hsl(var(--bg-hs) calc(var(--bg-l) - 10%));
+      border: none;
+      color: hsl(var(--clr-base-hs) calc(var(--clr-base-l) + 30%));
+    }
+
+    /* Back to start button style */
+    &.backtostart {
+      background: none;
+      border: none;
+      box-shadow: none;
+      color: var(--clr-primary);
+
+      &:is(:hover, :focus) {
+        color: hsl(var(--clr-primary-hs) calc(var(--clr-primary-l) + 10%));
+      }
+
+      &:is(:active) {
+        color: hsl(var(--clr-primary-hs) calc(var(--clr-primary-l) - 10%));
+      }
+
+      &:is(:disabled) {
+        box-shadow: none;
+        border: none;
+        color: hsl(var(--clr-base-hs) calc(var(--clr-base-l) + 30%));
+      }
+    }
+  }
+}

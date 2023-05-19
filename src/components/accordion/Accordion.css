@@ -1,0 +1,55 @@
+/* Accordion */
+
+.accordion {
+  --background-color: transparent;
+  --color: var(--clr-primary);
+  --size: var(--fs-3);
+  --border: 1px solid hsl(var(--clr-base-hs) calc(var(--clr-base-l) + 55%));
+
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  & .child {
+    padding: 1em;
+    border-inline: var(--border);
+    border-bottom: var(--border);
+  }
+
+  & button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--background-color);
+    color: var(--color);
+    padding: 1em 1.5em;
+    margin-block: 1em;
+    border: 2px solid var(--color);
+    border-radius: 5rem;
+    font-size: var(--size);
+    font-weight: var(--fw-5);
+    cursor: pointer;
+    outline: none;
+
+    &:is(:hover, :focus) {
+      --background-color: var(--clr-secondary);
+      --color: var(--clr-base);
+    }
+
+    & svg {
+      fill: var(--color);
+      width: var(--size);
+      height: var(--size);
+    }
+  }
+
+  & .content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+
+    &.open {
+      max-height: fit-content;
+    }
+  }
+}

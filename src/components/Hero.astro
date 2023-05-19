@@ -1,0 +1,36 @@
+---
+// Component Imports
+import MainHeading from './MainHeading.astro';
+
+// Props
+const { heading, subHeading } = Astro.props;
+---
+
+<section>
+  <MainHeading heading={heading} subHeading={subHeading} />
+</section>
+
+<style>
+  section {
+    display: grid;
+
+    background: linear-gradient(
+        to bottom,
+        rgba(9, 19, 50, 0.73),
+        rgba(0, 8, 21, 0.24)
+      ),
+      url('../images/ncei-noaa.webp');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* position: relative; */
+    min-height: 70dvh;
+
+    padding: 3em;
+
+    /* TESTING */
+    @media (--motion) {
+      background-attachment: fixed;
+    }
+  }
+</style>

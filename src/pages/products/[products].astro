@@ -1,0 +1,76 @@
+---
+// Utility functions
+import { slugify } from '../../js/utils';
+
+// Component Imports
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+
+// Library Imports
+import taxonomyData from '../../data/taxonomyData.json';
+
+// React Import
+// import Slider from '../../components/slider/Slider';
+
+export async function getStaticPaths() {
+  const paths = taxonomyData
+    ?.map(data => {
+      const pathSegment =
+        typeof data.path === 'string' ? data.path.split('/').pop() : '';
+      if (pathSegment === '') {
+        return null; // skip this data object if path is null or undefined
+      }
+      return {
+        params: { products: pathSegment },
+        props: {
+          id: data.id,
+          relationship: data.relationshipsId,
+          parent: data.parentId,
+          internal: data.internalId,
+          target: data.targetId,
+          name: data.name,
+          text: data.text,
+        },
+      };
+    })
+    .filter(Boolean);
+  return paths;
+}
+
+const { products } = Astro.params;
+
+const { id, relationship, parent, internal, target, name, text } = Astro.props;
+
+const title = name;
+const subHeading = ``;
+---
+
+<Layout title={title} subHeading={subHeading}>
+  <section>
+    <div class="container">
+      <h2>{name}</h2>
+      <div class="htmlEl" set:html={text} />
+    </div>
+
+    <div class="container flex">
+      <!-- <Slider client:visible> -->
+      {
+        taxonomyData?.map(data =>
+          id === data.parentId ||
+          parent === data.id ||
+          parent === data.relationshipsId ||
+          relationship === data.parentId ||
+          relationship === data.id ||
+          id === data.relationshipsId ||
+          internal === data.targetId ||
+          target === data.internalId ? (
+            <>
+              <Card heading={data.name} href={data.path} dark />
+            </>
+          ) : null
+        )
+      }
+      <!-- </Slider> -->
+    </div>
+  </section>
+</Layout>

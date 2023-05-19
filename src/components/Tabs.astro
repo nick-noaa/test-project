@@ -1,0 +1,276 @@
+---
+// Library Imports
+import { Image } from '@astrojs/image/components';
+
+// Component Imports
+import Link from './Link.astro';
+
+// React Import
+import Accordion from './accordion/Accordion';
+
+// Props
+export interface Props {
+  type?: 'tabs' | 'card' | 'other';
+  style?: 'primary' | 'secondary' | 'error' | 'accent' | 'light' | 'white';
+  side?: 'left' | 'right' | 'top' | 'bottom';
+  htmlEl?: boolean,
+  activeColor?: string;
+  notactiveColor?: string;
+  headings: string[];
+  contents: string[];
+  tabId?: string[];
+  fieldId?: string[];
+  paragraph?: string[];
+  label: string[];
+  toolTip?: boolean;
+  shortText?: boolean;
+
+  images?: {
+    id?: string[];
+    InternalId?: string[];
+    name?: string[];
+    src: string[];
+    alt?: string[];
+    width?: string[];
+    height?: string[];
+  }
+
+  acknowledgements: {
+    title?: string[];
+    body?: string[];
+    imageId?: string[];
+    images?: {images};
+  }
+
+  accordion?: {
+    id: string[];
+    parentId: string[];
+    title: string[];
+    child: string[];
+    images?: {images};
+  }
+}
+const {
+  type = 'tabs',
+  style = 'white',
+  side = 'left',
+  htmlEl = false,
+  headings,
+  contents,
+  fieldId,
+  paragraph,
+  label,
+  toolTip = false,
+  shortText= false,
+  images,
+  acknowledgements,
+  accordion,
+  tabId,
+  activeColor = `var(--clr-secondary)`,
+  notactiveColor = `hsl(var(--clr-bw-hs) calc(var(--clr-white-l) - 15%))`,
+} = Astro.props as Props;
+---
+
+<section class:list={["tabs", side]}>
+  <nav>
+    <ul class:list={["header", side]}>
+      {
+        headings.map((heading, i) => (
+          <li>
+            <Link text={heading} label={label[i]} type='tabs' {style} {toolTip} {shortText} />
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <article class:list={["content", side]}>
+    {
+      contents.map((content, i) => (
+        <section style="block">
+          {htmlEl ? (
+            <div class="htmlEl" set:html={content} />
+          ) : (
+            <>{content}</>
+          )}
+          {accordion &&
+            accordion?.parentId?.map((id, index) => {
+              if (fieldId && tabId[i] == id) {
+                return (
+                  <>
+                    {accordion.title &&
+                      accordion.child &&
+                      accordion.title[index] &&
+                      accordion.child[index] &&
+                      // render accordion if both title and child exist and are not empty
+                      (htmlEl ? (
+                        <Accordion
+                          client:visible
+                          title={accordion.title[index]}
+                          set:html={accordion.child[index]}
+                        />
+                      ) : (
+                        <Accordion
+                          client:visible
+                          title={accordion.title[index]}
+                        >
+                          {accordion.child[index]}
+                        </Accordion>
+                      ))}
+                      <>
+                        {htmlEl ? (
+                          <div class="htmlEl" set:html={paragraph[index]} />
+                        ) : (
+                          <>{paragraph[index]}</>
+                        )}
+                      </>
+
+                      {acknowledgements.images.id[index] &&
+                      <section class="acknowledgement">
+                        {htmlEl ? (
+                          <>
+                            <Image title={acknowledgements.images.name} src={acknowledgements.images.src} alt={acknowledgements.images.alt} width={acknowledgements.images.width} height={acknowledgements.images.height} loading="lazy" format="webp" />
+
+                            <div class="content">
+                              <h3>{acknowledgements.title[index]}</h3>
+                              <div class="htmlEl" set:html={acknowledgements.body[index]} />
+                            </div>
+                          </>
+                        ) : (
+                          <h3>{acknowledgements.title[index]}</h3>
+                          <>{acknowledgements.body[index]}</>
+                        )}
+                      </sec>}
+                  </>
+                );
+              } else {
+                return null;
+              }
+            })}
+        </section>
+      ))
+    }
+  </article>
+</section>
+
+<style>
+  .tabs {
+  display: grid;
+
+
+  &.left {
+    grid-template-columns: 1fr auto;
+    gap: 2em;
+    @media (--tablet) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+    }
+
+  }
+
+    &.top {
+    grid-template-rows: 1fr auto;
+    gap: 1em;
+    padding-bottom:1em;
+    @media (--tablet) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto;
+    }
+
+  }
+
+  & .header {
+    display: flex;
+    text-align: center;
+    gap: 1em;
+
+    &.left {
+      flex-direction: column;
+
+    @media (--tablet) {
+      flex-direction: row;
+      gap: 0.4em;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    }
+    &.top {
+      flex-direction: row;
+      justify-content: center;
+      padding-block: 1em;
+
+    @media (--tablet) {
+      gap: 0.4em;
+      flex-wrap: wrap;
+    }
+    }
+
+    & li {
+      list-style: none;
+    }
+  }
+
+  & .content {
+    padding: 0;
+    overflow: hidden;
+
+    @media (--tablet) {
+      padding-block: 2em;
+    }
+  }
+
+  & .acknowledgement {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-block: 1em;
+    padding: 1.5em;
+    border-radius: 1rem;
+    background-color: var(--clr-light);
+    gap: 3em;
+
+   & img {
+      width: 10%;
+      height: auto;
+    }
+
+    & .content {
+        padding-left: 1em;
+    }
+  }
+
+}
+</style>
+
+<script define:vars={{ activeColor, notactiveColor }}>
+  function createTabs(element) {
+    const header = element.querySelector('.header');
+    const content = element.querySelector('.content');
+    const tab_headers = [...header.children];
+    const tab_link = [...header.querySelectorAll('a')];
+    const tab_contents = [...content.children];
+    tab_contents.forEach(x => (x.style.display = 'none'));
+    let current_tab_index = -1;
+    function setTab(index) {
+      if (current_tab_index > -1) {
+        tab_link[current_tab_index].style.fontWeight = 'var(--fw-2)';
+        tab_link[current_tab_index].style.background = notactiveColor;
+        // tab_link[current_tab_index].style.color = 'var(--clr-base)';
+        tab_contents[current_tab_index].style.display = 'none';
+      }
+      tab_link[index].style.fontWeight = 'var(--fw-6)';
+      tab_link[index].style.background = activeColor;
+      // tab_link[index].style.color = 'var(--clr-white)';
+      tab_contents[index].style.display = 'block';
+      current_tab_index = index;
+    }
+    let default_tab_index = tab_headers.findIndex(x => {
+      return [...x.classList].indexOf('default-tab') > -1;
+    });
+    default_tab_index = default_tab_index === -1 ? 0 : default_tab_index;
+    setTab(default_tab_index);
+    tab_headers.forEach((x, i) => (x.onclick = event => setTab(i)));
+  }
+  // Run
+  [...document.querySelectorAll('.tabs')].forEach(x => createTabs(x));
+</script>
